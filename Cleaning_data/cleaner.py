@@ -1,10 +1,11 @@
 # Cleaning_data/cleaner.py
 import pandas as pd
-from Cleaning_data.config import DATA_FILE_PATH, TINH_FILE_PATH, CLEANED_DATA_PATH
+from Cleaning_data.config import DATA_FILE_PATH, TINH_FILE_PATH, CLEANED_DATA_PATH, RAW_DATA_API
 
 
-def load_data():
-    data_df = pd.read_csv(DATA_FILE_PATH)
+def load_data(use_raw_data=False):
+    data_file_path = RAW_DATA_API if use_raw_data else DATA_FILE_PATH
+    data_df = pd.read_csv(data_file_path)
     tinh_df = pd.read_csv(TINH_FILE_PATH)
     return data_df, tinh_df
 

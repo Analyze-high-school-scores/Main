@@ -7,6 +7,7 @@ from io import StringIO
 DATA_FILE_PATH = 'https://andyanh.id.vn/index.php/s/AQrkaif3HWgs9ke/download'
 TINH_FILE_PATH = 'https://andyanh.id.vn/index.php/s/zbHTAjksBekNB4M/download'
 CLEANED_DATA_PATH = "C:/Users/admin/Nextcloud4/andyanh/Data-Project-Student-Manager/Cleaning Data" # dùng địa chỉ thư mục này để đẩy thẳng vào cloud
+RAW_DATA_API = 'https://andyanh.id.vn/index.php/s/p7XMy828G8NKiZp/download'
 
 def fetch_csv_from_api(api_url):
     from datetime import datetime, timedelta
