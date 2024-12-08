@@ -42,6 +42,14 @@ def create_update_window(parent):
         new_dia_ly = entry_dia_ly.get().strip()
         new_gdcd = entry_gdcd.get().strip()
 
+        # Hàm chuyển đổi điểm
+        def convert_to_float(value):
+            try:
+                diem = float(value)
+                return diem if diem >= 0 else -1
+            except ValueError:
+                return None  # Trả về None để giữ nguyên giá trị cũ
+
         # Tìm dòng cần cập nhật
         condition = (df["SBD"] == sbd) & (df["Year"] == year)
         if condition.any():
@@ -51,25 +59,25 @@ def create_update_window(parent):
                 if not update_row.empty:
                     row = update_row.iloc[0]
                     save_history(row, "CẬP NHẬT")
-                # Cập nhật điểm các môn
-                if new_toan:
-                    df.loc[condition, "Toan"] = float(new_toan)
-                if new_van:
-                    df.loc[condition, "Van"] = float(new_van)
-                if new_ly:
-                    df.loc[condition, "Ly"] = float(new_ly)
-                if new_sinh:
-                    df.loc[condition, "Sinh"] = float(new_sinh)
-                if new_ngoai_ngu:
-                    df.loc[condition, "Ngoai ngu"] = float(new_ngoai_ngu)
-                if new_hoa:
-                    df.loc[condition, "Hoa"] = float(new_hoa)
-                if new_lich_su:
-                    df.loc[condition, "Lich su"] = float(new_lich_su)
-                if new_dia_ly:
-                    df.loc[condition, "Dia ly"] = float(new_dia_ly)
-                if new_gdcd:
-                    df.loc[condition, "GDCD"] = float(new_gdcd)
+                
+                # Cập nhật điểm các môn nếu có giá trị mới
+                mon_hoc = {
+                    "Toan": new_toan,
+                    "Van": new_van,
+                    "Ly": new_ly,
+                    "Sinh": new_sinh,
+                    "Ngoai ngu": new_ngoai_ngu,
+                    "Hoa": new_hoa,
+                    "Lich su": new_lich_su,
+                    "Dia ly": new_dia_ly,
+                    "GDCD": new_gdcd
+                }
+
+                for mon, diem in mon_hoc.items():
+                    diem_moi = convert_to_float(diem)
+                    if diem_moi is not None:  # Chỉ cập nhật nếu có giá trị hợp lệ
+                        df.loc[condition, mon] = diem_moi
+
 
                 # Ghi lại vào file CSV
                 df.to_csv(cached, index=False)
