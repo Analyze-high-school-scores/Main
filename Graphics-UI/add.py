@@ -34,6 +34,9 @@ def create_add_window(parent):
         except ValueError:
             messagebox.showerror("Lỗi", "Số báo danh, Năm và Mã tỉnh phải là số!", parent=add_window)
             return
+        if not df[(df["SBD"] == sbd) & (df["Year"] == year)].empty:
+            messagebox.showerror("Lỗi", f"Số báo danh {sbd} cho năm {year} đã tồn tại!", parent=add_window)
+            return
 
         # Lấy các điểm mới từ các ô nhập
         new_toan = entry_toan.get().strip()
@@ -49,10 +52,10 @@ def create_add_window(parent):
         # Kiểm tra và chuyển đổi các điểm thi, nếu không có điểm thì mặc định là NaN
         def convert_to_float(value):
             try:
-                return float(value) if value else None
+                diem = float(value)
+                return diem if diem >= 0 else -1
             except ValueError:
-                return None
-
+                return -1
         # Tạo dictionary mới với dữ liệu người dùng nhập
         new_data = {
             "SBD": sbd,
